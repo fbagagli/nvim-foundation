@@ -34,7 +34,7 @@ vim.schedule(function()
 vim.opt.undofile = true
 vim.opt.scrolloff = 8
 vim.opt.updatetime = 250
-vim.opt.timeoutlen = 300
+vim.opt.timeoutlen = 500
 
 -- SPLIT BEHAVIOR
 vim.opt.splitright = true
