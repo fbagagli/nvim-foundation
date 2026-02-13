@@ -82,6 +82,9 @@ return {
         --  the definition of its *type*, not where it was *defined*.
         map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
 
+        -- Open diagnostic float
+        map('gl', vim.diagnostic.open_float, 'Open diagnostic f[l]oat')
+
         -- The following two autocommands are used to highlight references of the
         -- word under your cursor when your cursor rests there for a little while.
         --    See `:help CursorHold` for information about when this is executed
@@ -120,11 +123,11 @@ return {
     require('mason-lspconfig').setup({})
     local servers = {
       'basedpyright', -- Python
+      'ruff',         -- Python linter
     }
     local ensure_installed = vim.list_extend({}, servers)
     vim.list_extend(ensure_installed, {
       'lua_ls', -- Lua Language server
-      'ruff',
       'stylua', -- Used to format Lua code
       -- You can add other tools here that you want Mason to install
     })
@@ -135,16 +138,6 @@ return {
       vim.lsp.config(name, { capabilities = capabilities })
       vim.lsp.enable(name)
     end
-
-    -- Special Ruff config
-    vim.lsp.config('ruff', {
-      capabilities = capabilities,
-      on_attach = function(client, bufnr)
-        -- Disable hover in favor of basedpyright
-        client.server_capabilities.hoverProvider = false
-      end,
-    })
-    vim.lsp.enable('ruff')
 
     -- Special Lua Config, as recommended by neovim help docs
     vim.lsp.config('lua_ls', {

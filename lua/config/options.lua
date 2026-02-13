@@ -19,9 +19,6 @@ vim.opt.cursorline = true
 vim.opt.signcolumn = 'yes'
 vim.opt.termguicolors = true
 
--- Enable 24-bit color (optional, but requested to be here)
-vim.opt.termguicolors = true
-
 -- EDITING BEHAVIOR
 vim.opt.mouse = 'a'
 -- Sync clipboard between OS and Neovim.
@@ -61,13 +58,22 @@ vim.g.loaded_netrwPlugin = 1
 -- -----------------------------------------------------------------------------
 -- Controls how errors, warnings, hints appear in the editor
 vim.diagnostic.config({
-    -- Show diagnostics in a floating window on hover
-    virtual_text = {
-        prefix = '●',  -- Symbol before diagnostic text
-        spacing = 4,
+    -- -- single line error
+    -- virtual_text = {
+    --     prefix = '●',  -- Symbol before diagnostic text
+    --     spacing = 4,
+    -- },
+    virtual_text = false,
+    virtual_lines = false,
+    -- Define signs for the sign column directly in the config (Neovim 0.10+ API)
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = 'E',
+            [vim.diagnostic.severity.WARN] = 'W',
+            [vim.diagnostic.severity.INFO] = 'I',
+            [vim.diagnostic.severity.HINT] = 'H',
+        },
     },
-    -- Show signs in the sign column
-    signs = true,
     -- Underline problematic code
     underline = true,
     -- Don't update diagnostics while typing (reduces noise)
@@ -80,10 +86,3 @@ vim.diagnostic.config({
         source = true,  -- Show which LSP produced the diagnostic
     },
 })
-
--- Define signs for the sign column
-local signs = { Error = 'E', Warn = 'W', Hint = 'H', Info = 'I' }
-for type, icon in pairs(signs) do
-    local hl = 'DiagnosticSign' .. type
-    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
