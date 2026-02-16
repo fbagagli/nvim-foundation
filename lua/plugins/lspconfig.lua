@@ -125,6 +125,7 @@ return {
       'basedpyright', -- Python
       'ruff',         -- Python linter
       'clangd',       -- C/C++
+      'bashls',       -- Bash
     }
     local ensure_installed = vim.list_extend({}, servers)
     vim.list_extend(ensure_installed, {
