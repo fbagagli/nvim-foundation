@@ -14,6 +14,7 @@ return {
     end,
     formatters_by_ft = {
       python = { "ruff_format", "ruff_fix" }, -- formatting and import sorting
+      lua = { "stylua" },
       ["*"] = { "trim_whitespace" },
     },
   },
