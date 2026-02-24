@@ -136,11 +136,18 @@ return {
     })
 
     require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
-
     for _, name in ipairs(servers) do
-      vim.lsp.config(name, { capabilities = capabilities })
+      local ok, server_config = pcall(require, "lsp." .. name)
+      local server_caps = (ok and type(server_config) == "table" and server_config.capabilities) or {}
+      vim.lsp.config(name, {
+        capabilities = vim.tbl_deep_extend("force", capabilities, server_caps),
+      })
       vim.lsp.enable(name)
     end
+    --  for _, name in ipairs(servers) do
+    --    vim.lsp.config(name, { capabilities = capabilities })
+    --    vim.lsp.enable(name)
+    --  end
 
     -- Special Lua Config, as recommended by neovim help docs
     vim.lsp.config("lua_ls", {
